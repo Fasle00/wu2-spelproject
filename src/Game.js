@@ -31,12 +31,7 @@ export default class Game {
     this.gameTime += deltaTime
     this.player.update(deltaTime)
 
-    if (this.enemyTimer > this.enemyInterval) {
-      this.addEnemy()
-      this.enemyTimer = 0
-    } else {
-      this.enemyTimer += deltaTime
-    }
+    this.addEnemy(deltaTime)
 
     this.enemies.forEach((enemy) => {
       enemy.update(deltaTime)
@@ -60,7 +55,12 @@ export default class Game {
     this.enemies.forEach(enemy => enemy.draw(context))
   }
 
-  addEnemy() {
-    this.enemies.push(new Pumpkin(this))
+  addEnemy(deltaTime) {
+    if (this.enemyTimer > this.enemyInterval && this.enemies.length < 4) {
+      this.enemies.push(new Pumpkin(this))
+      this.enemyTimer = 0
+    } else {
+      this.enemyTimer += deltaTime
+    }
   }
 }
