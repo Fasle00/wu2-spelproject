@@ -29,22 +29,21 @@ export default class Player {
             this.speedX = 0
         }
 
-        console.log(`grounded: ${this.grounded}`)
         if (this.game.keys.includes('ArrowUp') && this.grounded) {
             this.speedY = -this.jumpSpeed
             this.grounded = false
             console.log('jump')
-        } 
+        }
 
-        if (this.grounded){
+        if (this.grounded) {
             this.speedY = 0
         } else {
             this.speedY += this.game.gravity
         }
-        
+
         if (this.game.keys.includes('ArrowDown')) {
             this.speedY = this.maxSpeed
-        } 
+        }
 
         this.x += this.speedX
         this.y += this.speedY

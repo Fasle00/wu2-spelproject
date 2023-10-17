@@ -45,11 +45,11 @@ export default class Game {
           if ((this.player.x < platform.x)) {
             this.player.speedX = 0
             this.player.x = platform.x - this.player.width
-          } else if((this.player.x + this.player.width > platform.x + platform.width)){
+          } else if ((this.player.x + this.player.width > platform.x + platform.width)) {
             this.player.x = platform.x + platform.width
             this.player.speedX = 0
           }
-        }else if (this.player.y + this.player.height / 3 < platform.y) {
+        } else if (this.player.y + this.player.height / 3 < platform.y) {
           this.player.grounded = true
           this.player.y = platform.y - this.player.height
         } else {
