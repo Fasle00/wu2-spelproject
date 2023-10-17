@@ -11,28 +11,40 @@ export default class Player {
         this.speedX = 0
         this.speedY = 0
         this.maxSpeed = 10
+        this.jumpSpeed = 15
+
+        this.grounded = false
 
         this.faceLeft = false
     }
 
     update(deltaTime) {
-        if (this.game.keys.includes('ArrowLeft')) {
+        if (this.game.keys.includes('ArrowLeft') && this.x > 0) {
             this.speedX = -this.maxSpeed
             this.faceLeft = true
-        } else if (this.game.keys.includes('ArrowRight')) {
+        } else if (this.game.keys.includes('ArrowRight') && this.x < this.game.width - this.width) {
             this.speedX = this.maxSpeed
             this.faceLeft = false
         } else {
             this.speedX = 0
         }
 
-        if (this.game.keys.includes('ArrowUp')) {
-            this.speedY = -this.maxSpeed
-        } else if (this.game.keys.includes('ArrowDown')) {
-            this.speedY = this.maxSpeed
-        } else {
+        console.log(`grounded: ${this.grounded}`)
+        if (this.game.keys.includes('ArrowUp') && this.grounded) {
+            this.speedY = -this.jumpSpeed
+            this.grounded = false
+            console.log('jump')
+        } 
+
+        if (this.grounded){
             this.speedY = 0
+        } else {
+            this.speedY += this.game.gravity
         }
+        
+        if (this.game.keys.includes('ArrowDown')) {
+            this.speedY = this.maxSpeed
+        } 
 
         this.x += this.speedX
         this.y += this.speedY

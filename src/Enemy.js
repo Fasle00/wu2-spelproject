@@ -4,13 +4,24 @@ export default class Enemy {
         this.x = 0
         this.y = 0
         this.speedX = 0
+        this.speedY = 0
         this.markedForDeletion = false
         this.lives = 1
+        this.grounded = false
     }
 
     update(deltaTime) {
-        this.x -= this.speedX
-        if (this.x < 0 || this.lives <= 0) this.markedForDeletion = true
+        if (this.grounded) {
+            this.speedY = 0
+          } else {
+            this.speedY += this.game.gravity
+        }
+
+        this.x += this.speedX
+        this.y += this.speedY
+        if (this.x < 0 || this.x + this.width >= this.game.width) this.speedX *= -1
+        if (this.y < 0 || this.y + this.height >= this.game.height) this.speedY *= -1
+        if (this.lives <= 0) this.markedForDeletion = true
     }
 
     draw(context) {
