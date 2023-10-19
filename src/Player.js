@@ -1,8 +1,10 @@
+import sprite from './assets/images/sprites.png'
+
 export default class Player {
     constructor(game) {
         this.game = game
-        this.width = 32
-        this.height = 64
+        this.width = 90
+        this.height = 100
         this.x = 50
         this.y = 100
 
@@ -14,6 +16,10 @@ export default class Player {
         this.jumpSpeed = 15
 
         this.grounded = false
+
+        const img = new Image()
+        img.src = sprite
+        this.image = img
 
         this.faceLeft = false
     }
@@ -52,6 +58,7 @@ export default class Player {
     draw(context) {
         context.fillStyle = '#f00'
         context.fillRect(this.x, this.y, this.width, this.height)
+        context.drawImage(this.image, 75,170,115,140,this.x, this.y, this.width, this.height)
 
         if (this.game.debug) {
             context.strokeRect(this.x, this.y, this.width, this.height)
