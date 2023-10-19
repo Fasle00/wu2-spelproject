@@ -24,7 +24,7 @@ export default class Game {
     this.platforms = [
       new Platform(this, 0, 0, this.width, 10),
       new Platform(this, 0, this.height - 10, this.width, 10),
-      new Platform(this, this.width / 2, this.height - 100, 100, 10),
+      new Platform(this, this.width / 2, this.height - 80, 100, 10),
       new Platform(this, this.width / 2 + 50, this.height - 150, 100, 10),
     ]
     this.player = new Player(this)
@@ -39,7 +39,6 @@ export default class Game {
     let colitions = 0
     this.platforms.forEach((platform) => {
       if (this.checkCollisions(this.player, platform)) {
-        console.log(platform)
         this.player.speedY = 0
         if (this.player.grounded) {
           if ((this.player.x < platform.x)) {
@@ -57,7 +56,7 @@ export default class Game {
           this.player.y = platform.y + platform.height
         }
         colitions++
-      } else console.log('not colliding')
+      }
       if (colitions === 0) this.player.grounded = false
       /*if (this.checkPlatform(this.player, platform)) {
         console.log('hit platform')
@@ -66,11 +65,25 @@ export default class Game {
         this.player.grounded = true
       }*/
       this.enemies.forEach((enemy) => {
-        if (this.checkPlatformCollision(enemy, platform)) {
+        if (this.checkCollisions(enemy, platform)) {
           enemy.speedY = 0
-          enemy.y = platform.y - enemy.height
-          enemy.grounded = true
+          if (enemy.grounded) {
+            if ((enemy.x < platform.x)) {
+              enemy.x = platform.x - enemy.width
+            } else if ((enemy.x + enemy.width > platform.x + platform.width)) {
+              enemy.x = platform.x + platform.width
+            }
+            enemy.speedX *= -1
+          } else if (enemy.y + enemy.height / 3 < platform.y) {
+            enemy.grounded = true
+            enemy.y = platform.y - enemy.height
+          } else {
+            enemy.grounded = false
+            enemy.y = platform.y + platform.height
+          }
+          colitions++
         }
+        if (colitions === 0) enemy.grounded = false
       })
     })
 
@@ -116,14 +129,14 @@ export default class Game {
       object.x <= platform.x + platform.width
     ) {
       if (object.grounded && object.y + object.height > platform.y) {
-        object.speedY = 0
-        object.y = platform.y - object.height
-        object.grounded = true
+        // object.speedY = 0
+        // object.y = platform.y - object.height
+        // object.grounded = true
       }
       return true
     } else {
       if (object.grounded && object.y + object.height < platform.y) {
-        object.grounded = false
+        // object.grounded = false
       }
       return false
     }
