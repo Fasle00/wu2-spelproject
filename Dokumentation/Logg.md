@@ -13,3 +13,6 @@ Jag har läst igenom all dokumentation på github
 ## Logg 19-10-2023
 Jag har lagt till bild på player
 jag har gjort så att enemies studsar på platforms
+
+## Logg 23-10-2023
+Jag har gjort enemy animations
