@@ -4,7 +4,7 @@ export default class Pumpkin extends Enemy {
     constructor(game) {
         super(game)
         this.width = 50
-        this.height = 80
+        this.height = 40
         this.x = Math.random() * (this.game.width * 0.9 - this.width * 2) + this.width
         this.y = Math.random() * (this.game.height * 0.9 - this.height)
         this.speedX = 2

@@ -24,8 +24,10 @@ export default class Game {
     this.platforms = [
       new Platform(this, 0, 0, this.width, 10),
       new Platform(this, 0, this.height - 10, this.width, 10),
-      new Platform(this, this.width / 2, this.height - 80, 100, 10),
-      new Platform(this, this.width / 2 + 50, this.height - 150, 100, 10),
+      new Platform(this, this.width / 2, this.height - 50, 100, 10),
+      new Platform(this, this.width / 2 + 50, this.height - 105, 100, 10),
+      new Platform(this, this.width / 2 + 100, this.height - 155, 100, 10),
+      new Platform(this, this.width / 2 + 150, this.height - 205, 100, 10),
     ]
     this.player = new Player(this)
   }
@@ -114,7 +116,9 @@ export default class Game {
 
   addEnemy(deltaTime) {
     if (this.enemyTimer > this.enemyInterval && this.enemies.length < 4) {
-      this.enemies.push(new Pumpkin(this))
+      let enemy = new Pumpkin(this)
+      enemy.enemyType = Math.ceil(Math.random() * 2)
+      this.enemies.push(enemy)
       this.enemyTimer = 0
     } else {
       this.enemyTimer += deltaTime

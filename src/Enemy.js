@@ -1,3 +1,5 @@
+import sprite from './assets/images/sprites-transp.png'
+
 export default class Enemy {
     constructor(game) {
         this.game = game
@@ -8,6 +10,12 @@ export default class Enemy {
         this.markedForDeletion = false
         this.lives = 1
         this.grounded = false
+
+        const img = new Image()
+        img.src = sprite
+        this.image = img
+
+        this.enemyType = 1;
     }
 
     update(deltaTime) {
@@ -25,8 +33,27 @@ export default class Enemy {
     }
 
     draw(context) {
-        context.fillStyle = '#0f0'
-        context.fillRect(this.x, this.y, this.width, this.height)
+        context.save()
+        switch (this.enemyType) {
+            case 1:
+                context.globalAlpha = (this.lives / 25)
+                context.drawImage(this.image, 285, 5, 50, 53, this.x, this.y, this.width, this.height)
+                context.globalAlpha = (25 - this.lives) * (1.0 / 25.0)
+                context.drawImage(this.image, 336, 6, 50, 53, this.x, this.y, this.width, this.height)
+                break;
+            case 2:
+                context.globalAlpha = (this.lives / 25)
+                context.drawImage(this.image, 280, 63, 50, 50, this.x, this.y, this.width, this.height)
+                context.globalAlpha = (25 - this.lives) * (1.0 / 25.0)
+                context.drawImage(this.image, 338, 63, 50, 50, this.x, this.y, this.width, this.height)
+                break;
+            default:
+                context.fillStyle = '#0f0'
+                context.fillRect(this.x, this.y, this.width, this.height)
+                break;
+        }
+        context.restore()
+
 
         if (this.game.debug) {
             context.strokeRect(this.x, this.y, this.width, this.height)
@@ -36,6 +63,7 @@ export default class Enemy {
             context.font = '12px Arial'
             context.fillText(`x: ${this.x.toFixed()}`, this.x + 20, this.y - 5)
             context.fillText(`y: ${this.y.toFixed()}`, this.x + 20, this.y - 20)
+            context.fillText(`type: ${this.enemyType}`, this.x + 40, this.y - 5)
         }
     }
 }
