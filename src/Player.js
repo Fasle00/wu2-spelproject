@@ -1,4 +1,4 @@
-import sprite from './assets/images/sprites.png'
+import sprite from './assets/images/sprites-transp.png'
 
 export default class Player {
     constructor(game) {
@@ -8,7 +8,7 @@ export default class Player {
         this.x = 50
         this.y = 100
 
-        this.frameX = 0
+        this.frame = 0
 
         this.speedX = 0
         this.speedY = 0
@@ -20,6 +20,9 @@ export default class Player {
         const img = new Image()
         img.src = sprite
         this.image = img
+        this.maxFrame = 2
+        this.timer = 0
+        this.animationTime = 300
 
         this.faceLeft = false
     }
@@ -51,20 +54,42 @@ export default class Player {
             this.speedY = this.maxSpeed
         }
 
+        if (this.timer > this.animationTime){
+            this.frame++
+            this.timer = 0
+            if (this.frame > this.maxFrame) this.frame = 0
+        } else {
+            this.timer += deltaTime
+        }
+
         this.x += this.speedX
         this.y += this.speedY
     }
 
     draw(context) {
-        context.fillStyle = '#f00'
-        context.fillRect(this.x, this.y, this.width, this.height)
-        context.drawImage(this.image, 75,170,115,140,this.x, this.y, this.width, this.height)
+        
+        switch (this.frame) {
+            case 0:
+                context.drawImage(this.image, 80,173,112,137, this.x, this.y, this.width, this.height)
+                break;
+            case 1:
+                context.drawImage(this.image, 203, 157, 130,170, this.x, this.y, this.width, this.height)
+                break;
+            case 2:
+                context.drawImage(this.image, 363, 182, 100,140, this.x, this.y, this.width, this.height)
+                break;
+            default:
+                context.fillStyle = '#f00'
+                context.fillRect(this.x, this.y, this.width, this.height)
+                break;
+        }
+        
 
         if (this.game.debug) {
             context.strokeRect(this.x, this.y, this.width, this.height)
             context.fillStyle = 'black'
             context.font = '12px Arial'
-            context.fillText(this.frameX, this.x, this.y - 5)
+            context.fillText(this.frame, this.x, this.y - 5)
         }
     }
 }
