@@ -18,3 +18,23 @@
     * counter för döda enemies
     * animation on death
 
+## Planering 2
+Game:
+* moveing Background / kamera bounds
+
+Player:
+* bounds
+
+Enemy:
+* bounds
+
+## Ordning
+Game:
+* background
+* kamera bounds
+
+Player:
+* bounds
+
+Enemy:
+* bounds
