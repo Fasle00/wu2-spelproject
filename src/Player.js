@@ -1,12 +1,14 @@
 import sprite from './assets/images/sprites-transp.png'
+import playerS from './assets/images/Ebbe/template player -- Ljus.png'
 
 export default class Player {
     constructor(game) {
         this.game = game
-        this.width = 90
+        this.width = 42
         this.height = 100
         this.x = 50
         this.y = 100
+        this.boundX = this.game.width
 
         this.frame = 0
 
@@ -18,7 +20,7 @@ export default class Player {
         this.grounded = false
 
         const img = new Image()
-        img.src = sprite
+        img.src = playerS
         this.image = img
         this.maxFrame = 2
         this.timer = 0
@@ -67,22 +69,24 @@ export default class Player {
     }
 
     draw(context) {
-        
-        switch (this.frame) {
-            case 0:
-                context.drawImage(this.image, 80,173,112,137, this.x, this.y, this.width, this.height)
-                break;
-            case 1:
-                context.drawImage(this.image, 203, 157, 130,170, this.x, this.y, this.width, this.height)
-                break;
-            case 2:
-                context.drawImage(this.image, 363, 182, 100,140, this.x, this.y, this.width, this.height)
-                break;
-            default:
-                context.fillStyle = '#f00'
-                context.fillRect(this.x, this.y, this.width, this.height)
-                break;
-        }
+
+
+        context.drawImage(this.image, 40, 0, 42, this.image.height, this.x, this.y, this.width, this.height)
+        //switch (this.frame) {
+        //    case 0:
+        //        context.drawImage(this.image, 80,173,112,137, this.x, this.y, this.width, this.height)
+        //        break;
+        //    case 1:
+        //        context.drawImage(this.image, 203, 157, 130,170, this.x, this.y, this.width, this.height)
+        //        break;
+        //    case 2:
+        //        context.drawImage(this.image, 363, 182, 100,140, this.x, this.y, this.width, this.height)
+        //        break;
+        //    default:
+        //        context.fillStyle = '#f00'
+        //        context.fillRect(this.x, this.y, this.width, this.height)
+        //        break;
+        //}
         
 
         if (this.game.debug) {
