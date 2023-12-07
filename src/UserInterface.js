@@ -16,11 +16,12 @@ export default class UserInterface {
       context.textAlign = 'left'
       context.font = `${this.fontSize}px ${this.fontFamily}`
       context.fillText(
-        `Time: ${(this.game.gameTime * 0.001).toFixed(1)}`,
+        `Time: ${Math.abs(((30000 - this.game.gameTime) * 0.001).toFixed(1))}`,
         20,
         100
       )
   
+      //this.drawTime(context)
       if (this.game.gameOver) {
         context.textAlign = 'center'
         context.font = `50px ${this.fontFamily}`
@@ -28,6 +29,12 @@ export default class UserInterface {
           'Game over',
           this.game.width / 2,
           this.game.height / 2 - 20
+        )
+
+        context.fillText(
+          `You lighted ${this.game.score} pumkins`,
+          this.game.width/2,
+          this.game.height / 2 + 30
         )
       }
   

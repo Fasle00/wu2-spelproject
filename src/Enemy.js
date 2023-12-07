@@ -1,4 +1,4 @@
-import sprite from './assets/images/sprites-transp.png'
+import pumpa from './assets/images/Ebbe/enemy_Pumpa.png'
 
 export default class Enemy {
     constructor(game) {
@@ -12,7 +12,7 @@ export default class Enemy {
         this.grounded = false
 
         const img = new Image()
-        img.src = sprite
+        img.src = pumpa
         this.image = img
 
         this.enemyType = 1;
@@ -27,32 +27,33 @@ export default class Enemy {
 
         this.x += this.speedX
         this.y += this.speedY
-        if (this.x < 0 || this.x + this.width >= this.game.width) this.speedX *= -1
+        if (this.x < 0 || this.x + this.width >= 1024) this.speedX *= -1
         if (this.y < 0 || this.y + this.height >= this.game.height) this.speedY *= -1
         if (this.lives <= 0) this.markedForDeletion = true
     }
 
     draw(context) {
-        context.save()
+        
         switch (this.enemyType) {
             case 1:
                 context.globalAlpha = (this.lives / 25)
-                context.drawImage(this.image, 285, 5, 50, 53, this.x, this.y, this.width, this.height)
+                context.drawImage(this.image, 0, this.image.height / 2, this.image.width, this.image.height / 2, this.x, this.y, this.width, this.height)
                 context.globalAlpha = (25 - this.lives) * (1.0 / 25.0)
-                context.drawImage(this.image, 336, 6, 50, 53, this.x, this.y, this.width, this.height)
+                context.drawImage(this.image, 0, 0, this.image.width, this.image.height / 2, this.x, this.y, this.width, this.height)
                 break;
             case 2:
                 context.globalAlpha = (this.lives / 25)
-                context.drawImage(this.image, 280, 63, 50, 50, this.x, this.y, this.width, this.height)
+                context.drawImage(this.image, 0, this.image.height / 2, this.image.width, this.image.height / 2, this.x, this.y, this.width, this.height)
                 context.globalAlpha = (25 - this.lives) * (1.0 / 25.0)
-                context.drawImage(this.image, 338, 63, 50, 50, this.x, this.y, this.width, this.height)
+                context.drawImage(this.image, 0, 0, this.image.width, this.image.height / 2, this.x, this.y, this.width, this.height)
                 break;
             default:
                 context.fillStyle = '#0f0'
                 context.fillRect(this.x, this.y, this.width, this.height)
                 break;
         }
-        context.restore()
+        context.globalAlpha = 1
+        
 
 
         if (this.game.debug) {

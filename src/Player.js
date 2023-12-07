@@ -1,4 +1,3 @@
-import sprite from './assets/images/sprites-transp.png'
 import playerS from './assets/images/Ebbe/template player -- Ljus.png'
 
 export default class Player {
@@ -8,7 +7,7 @@ export default class Player {
         this.height = 100
         this.x = 50
         this.y = 100
-        this.boundX = this.game.width
+        this.boundX = 1024
 
         this.frame = 0
 
@@ -33,11 +32,16 @@ export default class Player {
         if (this.game.keys.includes('ArrowLeft') && this.x > 0) {
             this.speedX = -this.maxSpeed
             this.faceLeft = true
-        } else if (this.game.keys.includes('ArrowRight') && this.x < this.game.width - this.width) {
+        } else if (this.game.keys.includes('ArrowRight') && this.x < 1024 - this.width) {
             this.speedX = this.maxSpeed
             this.faceLeft = false
         } else {
             this.speedX = 0
+        }
+
+        if (this.game.keys.includes('ArrowRight')) {
+            console.log(this.x)
+            console.log(this.game.width)
         }
 
         if (this.game.keys.includes('ArrowUp') && this.grounded) {
@@ -56,6 +60,7 @@ export default class Player {
             this.speedY = this.maxSpeed
         }
 
+        // animations
         if (this.timer > this.animationTime){
             this.frame++
             this.timer = 0

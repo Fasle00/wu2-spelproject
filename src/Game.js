@@ -3,6 +3,10 @@ import Player from "./Player"
 import UserInterface from "./UserInterface"
 import Pumpkin from "./Pumpkin";
 import Platform from "./Platform";
+import GroundPlatform from "./GroundPlatform";
+import Background from "./Background";
+import Camera from "./Camera";
+import Level1 from './levels/Level1';
 
 export default class Game {
   constructor(width, height) {
@@ -10,6 +14,7 @@ export default class Game {
     this.height = height
     this.input = new InputHandler(this)
     this.ui = new UserInterface(this)
+    this.background = new Background(this)
     this.keys = []
 
     this.gameOver = false
@@ -17,30 +22,47 @@ export default class Game {
     this.gravity = 1
     this.debug = false
 
+    this.level = new Level1(this)
+
+    // enemies
     this.enemies = []
     this.enemyTimer = 0
     this.enemyInterval = 1000
 
     this.platforms = [
-      new Platform(this, 0, 0, this.width, 10),
-      new Platform(this, 0, this.height - 10, this.width, 10),
-      new Platform(this, this.width / 2, this.height - 50, 100, 10),
-      new Platform(this, this.width / 2 + 50, this.height - 105, 100, 10),
-      new Platform(this, this.width / 2 + 100, this.height - 155, 100, 10),
-      new Platform(this, this.width / 2 + 150, this.height - 205, 100, 10),
+      //new Platform(this, 0, 0, this.width, 10),
+      //new GroundPlatform(this, this.height - 30),
+      //new Platform(this, 16, this.height - 156, 57, 5),
+      //new Platform(this, 116, this.height - 156 + 30, 57, 5),
+      //new Platform(this, 226, this.height - 156 + 15, 57, 5),
+      //new Platform(this, 336, this.height - 156 + 55, 57, 5),
+      //new Platform(this, 650, this.height - 156 + 8,  57, 5),
+      //new Platform(this, 740, this.height - 156 + 48, 57, 5),
+      //new Platform(this, 860, this.height - 156 + 11, 57, 5),
+      //new Platform(this, 960, this.height - 156 + 55,  57, 5),
+      //new Platform(this, this.width / 2 + 50, this.height - 105, 50, 100),
+      //new Platform(this, this.width / 2 - 250, this.height - 80, 50, 10),
+      //new Platform(this, this.width / 2 + 100, this.height - 155, 100, 150),
+      //new Platform(this, this.width / 2 + 150, this.height - 205, 100, 10),
     ]
     this.player = new Player(this)
+    this.camera = new Camera(this, this.player.x, this.player.y, 0, 100)
+
+    this.score = 0
   }
 
   update(deltaTime) {
     if (this.gameOver) {
       return
     }
+    if (this.gameTime >= 30000) this.gameOver = true
     this.gameTime += deltaTime
+    this.background.update()
     this.player.update(deltaTime)
     let colitions = 0
-    this.platforms.forEach((platform) => {
+    this.level.platforms.forEach((platform) => {
       if (this.checkCollisions(this.player, platform)) {
+        colitions++
         this.player.speedY = 0
         if (this.player.grounded) {
           if ((this.player.x < platform.x)) {
@@ -50,14 +72,24 @@ export default class Game {
             this.player.x = platform.x + platform.width
             this.player.speedX = 0
           }
+          this.player.grounded = true
         } else if (this.player.y + this.player.height / 3 < platform.y) {
           this.player.grounded = true
           this.player.y = platform.y - this.player.height
         } else {
+          if ((this.player.x < platform.x)) {
+            this.player.speedX = 0
+            this.player.x = platform.x - this.player.width
+          } else if ((this.player.x + this.player.width > platform.x + platform.width)) {
+            this.player.x = platform.x + platform.width
+            this.player.speedX = 0
+          }
+        }
+
+          /* else if (this.player.y + this.player.speedY > platform.y + platform.height){
           this.player.grounded = false
           this.player.y = platform.y + platform.height
-        }
-        colitions++
+        }*/
       }
       if (colitions === 0) this.player.grounded = false
       /*if (this.checkPlatform(this.player, platform)) {
@@ -66,6 +98,8 @@ export default class Game {
         this.player.y = platform.y - this.player.height
         this.player.grounded = true
       }*/
+      
+      
       this.enemies.forEach((enemy) => {
         if (this.checkCollisions(enemy, platform)) {
           enemy.speedY = 0
@@ -89,10 +123,15 @@ export default class Game {
       })
     })
 
+    this.camera.update(this.player)
+
     this.addEnemy(deltaTime)
 
     this.enemies.forEach((enemy) => {
       enemy.update(deltaTime)
+      if (enemy.lives <= 0) {
+        this.score++
+      }
       if (this.checkCollisions(this.player, enemy)) {
         enemy.lives--
       }
@@ -102,20 +141,31 @@ export default class Game {
 
   checkCollisions(object1, object2) {
     return object1.x < object2.x + object2.width &&
-      object1.x + object1.width > object2.x &&
+      object1.x + object1.width >= object2.x &&
       object1.y < object2.y + object2.height &&
-      object1.height + object1.y > object2.y
+      object1.height + object1.y >= object2.y
   }
 
   draw(context) {
+    this.camera.apply(context)
+    this.background.draw(context)
+    //this.platforms.forEach((platform) => { platform.draw(context) })
+    this.level.draw(context)
     this.player.draw(context)
-    this.ui.draw(context)
     this.enemies.forEach(enemy => enemy.draw(context))
-    this.platforms.forEach(platform => platform.draw(context))
+    //context.drawImage(this.background, 0, 0)
+    //context.drawImage(this.midGND, 0, 0)
+    //context.drawImage(this.forGND, 0, this.height - this.forGND.height)
+    this.camera.reset(context)
+    this.ui.draw(context)
+    context.font = '25px Arial'
+    context.fillStyle = 'white'
+    context.fillText(`Score: ${this.score}`, 10, 50)
+    
   }
 
   addEnemy(deltaTime) {
-    if (this.enemyTimer > this.enemyInterval && this.enemies.length < 4) {
+    if (this.enemyTimer > this.enemyInterval && this.enemies.length < 5) {
       let enemy = new Pumpkin(this)
       enemy.enemyType = Math.ceil(Math.random() * 2)
       this.enemies.push(enemy)

@@ -20,7 +20,9 @@
 
 ## Planering 2
 Game:
-* moveing Background / kamera bounds
+* Levels
+    * position
+    * moveing Background / kamera bounds
 
 Player:
 * bounds
@@ -30,8 +32,10 @@ Enemy:
 
 ## Ordning
 Game:
-* background
-* kamera bounds
+* Levels
+    * Position
+    * background
+    * kamera bounds
 
 Player:
 * bounds
