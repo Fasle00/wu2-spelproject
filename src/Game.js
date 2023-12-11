@@ -158,9 +158,6 @@ export default class Game {
     //context.drawImage(this.forGND, 0, this.height - this.forGND.height)
     this.camera.reset(context)
     this.ui.draw(context)
-    context.font = '25px Arial'
-    context.fillStyle = 'white'
-    context.fillText(`Score: ${this.score}`, 10, 50)
     
   }
 

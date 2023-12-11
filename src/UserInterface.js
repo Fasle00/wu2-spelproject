@@ -20,6 +20,7 @@ export default class UserInterface {
         20,
         100
       )
+      context.fillText(`Score: ${this.game.score}`, 10, 50)
   
       //this.drawTime(context)
       if (this.game.gameOver) {
