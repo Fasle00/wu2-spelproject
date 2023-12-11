@@ -8,10 +8,26 @@
   background-color: #242424;
 }
 
-#app {
+body {
+  margin: 0;
   height: 100vh;
   display: grid;
   place-content: center;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+
+  /* & li{
+    display: flex;
+  } */
+}
+
+ul li {
+  display: flex;
 }
 
 #canvas1 {
