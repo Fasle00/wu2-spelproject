@@ -18,6 +18,9 @@ export default class InputHandler {
             if (event.key === 'q') {
                 this.game.gameOver = !this.game.gameOver
             }
+            if (this.game.gameOver && event.key === 'Enter') {
+                this.game.reStart()
+            }
         })
         window.addEventListener('keyup', (event) => {
             if (this.game.keys.indexOf(event.key) > -1) {

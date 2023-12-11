@@ -215,4 +215,13 @@ export default class Game {
       (tw < tx || tw > rx) &&
       (th < ty || th > ry));
   }
+
+  reStart() {
+    this.gameOver = false
+    this.gameTime = 0
+    this.score = 0
+    this.enemyTimer = 0
+    this.enemies = []
+    this.player.x = 50
+  }
 }

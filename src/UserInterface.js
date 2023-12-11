@@ -25,17 +25,24 @@ export default class UserInterface {
       //this.drawTime(context)
       if (this.game.gameOver) {
         context.textAlign = 'center'
-        context.font = `50px ${this.fontFamily}`
+        context.font = `60px ${this.fontFamily}`
         context.fillText(
           'Game over',
           this.game.width / 2,
-          this.game.height / 2 - 20
+          this.game.height / 2 - 40
         )
 
+        context.font = `40px ${this.fontFamily}`
         context.fillText(
           `You lighted ${this.game.score} pumkins`,
           this.game.width/2,
-          this.game.height / 2 + 30
+          this.game.height / 2 + 10
+        )
+
+        context.fillText(
+          'Press enter to restart',
+          this.game.width/2,
+          this.game.height / 2 + 80
         )
       }
   
